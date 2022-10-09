@@ -8,30 +8,6 @@ SDL_Renderer* rend;
 
 #include"main.h"
 
-void render_tilemap(SDL_Renderer* r, TOOLS_TileMap* map, TOOLS_SDL_Image* bricks[9], TOOLS_SDL_Image* woods[9])
-{
-	for(int i=0;i<map->w;i++){
-		for(int j=0;j<map->h;j++){
-			int tile = map->m[i*map->w+j];
-			if(tile>0){
-				if(tile>8){
-					TOOLS_SDL_Image_RenderCopy(r, woods[tile-10], TILE_SIZE*j, TILE_SIZE*i, TILE_SIZE, TILE_SIZE);
-				}
-				else{
-					TOOLS_SDL_Image_RenderCopy(r, bricks[tile-1], TILE_SIZE*j, TILE_SIZE*i, TILE_SIZE, TILE_SIZE);
-				}
-			}
-		}
-	}
-}
-
-void level1(SDL_Renderer* r, TOOLS_SDL_Image* bricks[9], TOOLS_SDL_Image* woods[9])
-{
-	TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level1.map");
-    render_tilemap(r, &map, bricks, woods);
-}
-
-
 int main(int argc, char** argv)
 {
 	
@@ -92,18 +68,29 @@ int main(int argc, char** argv)
 		TOOLS_SDL_Image_RenderCopy(rend, archer_right[1], 100+TILE_SIZE, 100, TILE_SIZE, TILE_SIZE);
 		TOOLS_SDL_Image_RenderCopy(rend, archer_left[0], 100+TILE_SIZE*2, 100, TILE_SIZE, TILE_SIZE);
 		TOOLS_SDL_Image_RenderCopy(rend, archer_left[1], 100+TILE_SIZE*3, 100, TILE_SIZE, TILE_SIZE);
-
 		for(int i=0;i<9;i++){
 			TOOLS_SDL_Image_RenderCopy(rend, bricks[i], 50+i*TILE_SIZE, 100+TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
-
 		for(int i=0;i<9;i++){
 			TOOLS_SDL_Image_RenderCopy(rend, woods[i], 50+i*TILE_SIZE, 100+TILE_SIZE+TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
-
 		TOOLS_SDL_Image_RenderCopy(rend, backBrick, 50, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		
-		// level1(rend, bricks, woods);
+		TOOLS_SDL_Image_RenderCopy(rend, doors[0], 50+TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, doors[1], 50+2*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, arrow[0], 50+3*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, arrow[1], 50+4*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, barrel, 50+5*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, create, 50+6*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, moss, 50+7*TILE_SIZE, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		for(int i=0;i<4;i++){
+			TOOLS_SDL_Image_RenderCopy(rend, spikes[i], 50+i*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		}
+		TOOLS_SDL_Image_RenderCopy(rend, target[0], 50+5*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, target[1], 50+6*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, banner, 50+7*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, chains, 50+8*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, rat[0], 50+9*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, rat[1], 50+10*TILE_SIZE, 100+TILE_SIZE*4, TILE_SIZE, TILE_SIZE);
 		
 		SDL_RenderPresent(rend);
 	
