@@ -4,6 +4,7 @@ TOOLS_SDL_Image* archer_right[2];
 TOOLS_SDL_Image* archer_left[2];
 TOOLS_SDL_Image* bricks[9];
 TOOLS_SDL_Image* woods[9];
+TOOLS_SDL_Image* backBrick;
 
 void TILES_Load_Tiles(SDL_Surface* tileset)
 {
@@ -32,4 +33,6 @@ void TILES_Load_Tiles(SDL_Surface* tileset)
 	woods[6] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 4);
 	woods[7] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 4);
 	woods[8] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 4);
+
+	backBrick = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 3);
 }

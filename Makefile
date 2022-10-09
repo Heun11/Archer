@@ -48,6 +48,6 @@ clean:
 	rm $(WIN_OBJDIR)/*.o $(LINUX_OBJDIR)/*.o
 
 git:
-	git add . -- ':!$(LIBDIR)/*' 
+	git add . -- ':!$(LIBDIR)' 
 	git commit 
 	#git push

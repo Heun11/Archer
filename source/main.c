@@ -89,16 +89,21 @@ int main(int argc, char** argv)
 		SDL_RenderClear(rend);
 
 		TOOLS_SDL_Image_RenderCopy(rend, archer_right[0], 100, 100, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, archer_right[1], 100+TILE_SIZE, 100, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, archer_left[0], 100+TILE_SIZE*2, 100, TILE_SIZE, TILE_SIZE);
+		TOOLS_SDL_Image_RenderCopy(rend, archer_left[1], 100+TILE_SIZE*3, 100, TILE_SIZE, TILE_SIZE);
 
-		// for(int i=0;i<9;i++){
-		// 	TOOLS_SDL_Image_RenderCopy(rend, bricks[i], 50+i*TILE_SIZE, 100+TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		// }
+		for(int i=0;i<9;i++){
+			TOOLS_SDL_Image_RenderCopy(rend, bricks[i], 50+i*TILE_SIZE, 100+TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		}
 
-		// for(int i=0;i<9;i++){
-		// 	TOOLS_SDL_Image_RenderCopy(rend, woods[i], 50+i*TILE_SIZE, 100+TILE_SIZE+TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		// }
+		for(int i=0;i<9;i++){
+			TOOLS_SDL_Image_RenderCopy(rend, woods[i], 50+i*TILE_SIZE, 100+TILE_SIZE+TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		}
 
-		level1(rend, bricks, woods);
+		TOOLS_SDL_Image_RenderCopy(rend, backBrick, 50, 100+3*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		
+		// level1(rend, bricks, woods);
 		
 		SDL_RenderPresent(rend);
 	
