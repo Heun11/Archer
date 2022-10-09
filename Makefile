@@ -50,4 +50,4 @@ clean:
 git:
 	git add . -- ':!$(LIBDIR)' 
 	git commit 
-	#git push
+	git push
