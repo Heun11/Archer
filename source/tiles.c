@@ -8,7 +8,7 @@ TOOLS_SDL_Image* backBrick;
 TOOLS_SDL_Image* doors[2];
 TOOLS_SDL_Image* arrow[2];
 TOOLS_SDL_Image* barrel;
-TOOLS_SDL_Image* create;
+TOOLS_SDL_Image* box;
 TOOLS_SDL_Image* moss;
 TOOLS_SDL_Image* spikes[4];
 TOOLS_SDL_Image* target[2];
@@ -54,7 +54,7 @@ void TILES_Load_Tiles(SDL_Surface* tileset)
 
 	barrel =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 1);
 
-	create =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 1);
+	box =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 1);
 
 	moss =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 1);
 
@@ -69,7 +69,7 @@ void TILES_Load_Tiles(SDL_Surface* tileset)
 	rat[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 4);
 	rat[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 4);
 
-	banner = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 4);
-
-	chains = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 4);
+	chains = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 4);
+	
+	banner = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 4);
 }

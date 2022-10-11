@@ -11,7 +11,7 @@ extern TOOLS_SDL_Image* backBrick;
 extern TOOLS_SDL_Image* doors[2];
 extern TOOLS_SDL_Image* arrow[2];
 extern TOOLS_SDL_Image* barrel;
-extern TOOLS_SDL_Image* create;
+extern TOOLS_SDL_Image* box;
 extern TOOLS_SDL_Image* moss;
 extern TOOLS_SDL_Image* spikes[4];
 extern TOOLS_SDL_Image* target[2];

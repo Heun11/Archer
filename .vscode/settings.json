@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "tiles.h": "c"
+        "tiles.h": "c",
+        "stdio.h": "c"
     }
 }
