@@ -1,5 +1,23 @@
 #include"levels.h"
 
+struct LEVELS_level_render_info LEVELS_Get_Level_Render_Info(TOOLS_TileMap* map)
+{
+    struct LEVELS_level_render_info i; 
+    i.n1 = SCREEN_WIDTH/SCREEN_HEIGHT;
+    i.n2 = map->w/map->h;
+    i.x_o = 0;
+    i.y_o = 0;
+    if(i.n2>i.n1){
+        i.ts = SCREEN_WIDTH/map->w;
+        i.y_o = SCREEN_HEIGHT/2-(map->h*i.ts)/2;
+    }
+    else{
+        i.ts = SCREEN_HEIGHT/map->h;
+        i.x_o = SCREEN_WIDTH/2-(map->w*i.ts)/2;
+    }
+    return i;
+}
+
 void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, int tile_w, int tile_h)
 {
     for(int i=0;i<map->h*map->w;i++){
@@ -48,9 +66,11 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
 
 void LEVELS_level_1(Player* p)
 {
-    TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level1.map");
-    int tile_w = TILE_SIZE;
-    int tile_h = TILE_SIZE;
-    LEVELS_Render_Level_From_Tilemap(&map, 0, 0, tile_w, tile_h);
+    TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/test.map");
+    struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
+    LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
+
+    // level code (player, usable objects)
+
     TOOLS_Free_Tilemap(&map);
 }

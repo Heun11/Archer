@@ -21,6 +21,11 @@
     6 -> dvere (vchod (zavrete))
 */
 
+struct LEVELS_level_render_info{
+    int n1, n2, ts, y_o, x_o;
+};
+
+
 void LEVELS_level_1(Player* p);
 
 #endif

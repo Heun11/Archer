@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	
-	SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 640, 0);
+	SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	if(!win){
 		SDL_Quit();
 		return 1;
@@ -26,12 +26,15 @@ int main(int argc, char** argv)
 		SDL_Quit();
 		return 1;
 	}
+	float elapsed = 1;
 	
 	SDL_Surface* tileset = IMG_Load("resources/archer-tileset.png");
 	TILES_Load_Tiles(tileset);
 	SDL_FreeSurface(tileset);
 
 	Player player = {0,0,TILE_SIZE,TILE_SIZE,0,0,0,0};
+	int count = 0;
+	int anim_c = 0;
 
 	int run = 1;
 	while(run){
@@ -62,14 +65,22 @@ int main(int argc, char** argv)
 		}
 
 		SDL_RenderClear(rend);
+    	// SDL_SetRenderDrawColor(rend, 255, 0, 0, 255); // background color
 
 		LEVELS_level_1(&player);
+
+		// TOOLS_Play_Animation(rend, count, 500, archer_right, &anim_c, 1, elapsed, 100, 100, 64, 64);
+
+		// if(count>600){
+		// 	count = 0;
+		// }
 		
 		SDL_RenderPresent(rend);
 	
 		Uint64 end = SDL_GetPerformanceCounter();
-		float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
-		//printf("fps %f\n", 1.0f/elapsed);
+		elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+		// printf("fps %f\n", 1.0f/elapsed);
+
 		SDL_Delay(elapsed);
 		
 	}

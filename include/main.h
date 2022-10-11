@@ -7,6 +7,9 @@
 #define TILE_SIZE_REAL 16
 #define TILE_SIZE 48
 
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 640
+
 typedef struct{
     int x;
     int y;
