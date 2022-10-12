@@ -31,7 +31,7 @@ void TOOLS_Free_Tilemap(TOOLS_TileMap* m);
 void TOOLS_SDL_Text_RenderCopy(SDL_Renderer* r, TTF_Font* f, char* s, int x, int y, int w, int h, SDL_Color c);
 int TOOLS_Random_Number(int start, int stop);
 int TOOLS_Collide_Rect(SDL_Rect r1, SDL_Rect r2);
-void TOOLS_Play_Animation(SDL_Renderer* r, int count, int t_inmilis, TOOLS_SDL_Image** images, int* anim_c, int anim_len, float dt, int x, int y, int w, int h);
+void TOOLS_Play_Animation(SDL_Renderer* r, TOOLS_SDL_Image** images, float* anim_c, int fps, int anim_len, int x, int y, int w, int h);
 
 void get_error();
 

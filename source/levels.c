@@ -64,6 +64,11 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
 	}
 }
 
+
+// LEVEL local variables
+float anim_c1 = 0;
+float anim_c2 = 0;
+
 void LEVELS_level_1(Player* p)
 {
     TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/test.map");
@@ -71,6 +76,8 @@ void LEVELS_level_1(Player* p)
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
     // level code (player, usable objects)
+	TOOLS_Play_Animation(rend, archer_right, &anim_c1, 5, 2, 100,400,info.ts,info.ts);
+	TOOLS_Play_Animation(rend, archer_left, &anim_c2, 5, 2, 100,400+info.ts,info.ts,info.ts);
 
     TOOLS_Free_Tilemap(&map);
 }

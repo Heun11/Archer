@@ -33,8 +33,6 @@ int main(int argc, char** argv)
 	SDL_FreeSurface(tileset);
 
 	Player player = {0,0,TILE_SIZE,TILE_SIZE,0,0,0,0};
-	int count = 0;
-	int anim_c = 0;
 
 	int run = 1;
 	while(run){
@@ -68,12 +66,6 @@ int main(int argc, char** argv)
     	// SDL_SetRenderDrawColor(rend, 255, 0, 0, 255); // background color
 
 		LEVELS_level_1(&player);
-
-		// TOOLS_Play_Animation(rend, count, 500, archer_right, &anim_c, 1, elapsed, 100, 100, 64, 64);
-
-		// if(count>600){
-		// 	count = 0;
-		// }
 		
 		SDL_RenderPresent(rend);
 	
