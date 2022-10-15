@@ -1,6 +1,10 @@
 #ifndef LEVELS_H
 #define LEVELS_H
 
+struct LEVELS_level_render_info{
+    int n1, n2, ts, y_o, x_o;
+};
+
 #include"main.h"
 
 /*
@@ -11,6 +15,7 @@
     0 -> nic
     1-9 -> tehly
     10-19 -> dreva
+    20-23 -> drevo tehla
     Decor layer:
     0 -> nic
     1 -> sud
@@ -21,11 +26,6 @@
     6 -> dvere (vchod (zavrete))
 */
 
-struct LEVELS_level_render_info{
-    int n1, n2, ts, y_o, x_o;
-};
-
-
-void LEVELS_level_1(Player* p);
+void LEVELS_level_1(PLAYER_Player* p);
 
 #endif

@@ -3,22 +3,23 @@
 
 #include"main.h"
 
-extern TOOLS_SDL_Image* archer_right[2];
-extern TOOLS_SDL_Image* archer_left[2];
-extern TOOLS_SDL_Image* bricks[9];
-extern TOOLS_SDL_Image* woods[9];
-extern TOOLS_SDL_Image* backBrick;
-extern TOOLS_SDL_Image* doors[2];
-extern TOOLS_SDL_Image* arrow[2];
-extern TOOLS_SDL_Image* barrel;
-extern TOOLS_SDL_Image* box;
-extern TOOLS_SDL_Image* moss;
-extern TOOLS_SDL_Image* spikes[4];
-extern TOOLS_SDL_Image* target[2];
-extern TOOLS_SDL_Image* rat[2];
-extern TOOLS_SDL_Image* banner;
-extern TOOLS_SDL_Image* chains;
+extern SDL_Rect archer_right[3];
+extern SDL_Rect archer_left[3];
+extern SDL_Rect bricks[9];
+extern SDL_Rect woods[9];
+extern SDL_Rect backBrick;
+extern SDL_Rect doors[2];
+extern SDL_Rect arrow[2];
+extern SDL_Rect barrel;
+extern SDL_Rect box;
+extern SDL_Rect moss;
+extern SDL_Rect spikes[4];
+extern SDL_Rect target[2];
+extern SDL_Rect rat[2];
+extern SDL_Rect banner;
+extern SDL_Rect chains;
+extern SDL_Rect woodBricks[4];
 
-void TILES_Load_Tiles(SDL_Surface* tileset);
+void TILES_Load_Tiles();
 
 #endif

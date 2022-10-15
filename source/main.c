@@ -4,6 +4,7 @@
 #include"main.h"
 
 SDL_Renderer* rend;
+SDL_Texture* tex;
 
 int main(int argc, char** argv)
 {
@@ -28,11 +29,20 @@ int main(int argc, char** argv)
 	}
 	float elapsed = 1;
 	
-	SDL_Surface* tileset = IMG_Load("resources/archer-tileset.png");
-	TILES_Load_Tiles(tileset);
+	SDL_Surface* tileset = IMG_Load("resources/archer-tileset-new.png");
+	tex = SDL_CreateTextureFromSurface(rend, tileset);
 	SDL_FreeSurface(tileset);
 
-	Player player = {0,0,TILE_SIZE,TILE_SIZE,0,0,0,0};
+	TILES_Load_Tiles();
+
+	PLAYER_Player player = PLAYER_Create_Player();
+	int key;
+
+	TTF_Init();
+	TTF_Font* font = TTF_OpenFont("resources/ancient.ttf", 100);
+	SDL_Color text_color = {252, 3, 215};
+
+	char fps_str[10];
 
 	int run = 1;
 	while(run){
@@ -46,15 +56,17 @@ int main(int argc, char** argv)
 					run = 0;
 					break;
 				case SDL_KEYDOWN:
-					switch(event.key.keysym.scancode){
-						
+					key = event.key.keysym.scancode;
+					PLAYER_Key_Down_Player(&player, key);
+					switch(key){
 						default:
 							break;
 					}
 					break;
 				case SDL_KEYUP:
-					switch(event.key.keysym.scancode){
-						
+					key = event.key.keysym.scancode;
+					PLAYER_Key_Up_Player(&player, key);
+					switch(key){
 						default:
 							break;
 					}
@@ -66,7 +78,10 @@ int main(int argc, char** argv)
     	// SDL_SetRenderDrawColor(rend, 255, 0, 0, 255); // background color
 
 		LEVELS_level_1(&player);
-		
+
+		snprintf(fps_str, 10, "fps:%d", (int)(1.0f/elapsed));
+		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);
+
 		SDL_RenderPresent(rend);
 	
 		Uint64 end = SDL_GetPerformanceCounter();

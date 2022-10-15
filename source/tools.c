@@ -16,6 +16,15 @@ void get_error()
 	exit(0);
 }
 
+void TOOLS_SDL_Text_RenderCopy(SDL_Renderer* r, TTF_Font* f, char* s, int x, int y, int w, int h, SDL_Color c)
+{
+	SDL_Surface* surf = TTF_RenderText_Solid(f, s, c);
+	SDL_Texture* t = SDL_CreateTextureFromSurface(r, surf);
+	SDL_FreeSurface(surf);
+	SDL_RenderCopy(r, t, NULL, &(SDL_Rect){x, y, w, h});
+	SDL_DestroyTexture(t);
+}
+
 TOOLS_TileMap TOOLS_Load_TileMap_From_File_To_Array(char* filename)
 {
 	TOOLS_TileMap m;
@@ -45,39 +54,16 @@ void TOOLS_Free_Tilemap(TOOLS_TileMap* m)
 	free(m->l2);
 }
 
-TOOLS_SDL_Image* TOOLS_SDL_Image_Load_From_Surface(SDL_Renderer* r, SDL_Surface* s, int s_x, int s_y, int s_w, int s_h)
+SDL_Rect TOOLS_Get_Image_Src(int x, int y, int t_w, int t_h)
 {
-	TOOLS_SDL_Image* i = malloc(sizeof(TOOLS_SDL_Image));
-	i->src = malloc(sizeof(SDL_Rect));
-
-	i->src->x = s_x;
-	i->src->y = s_y;
-	i->src->w = s_w;
-	i->src->h = s_h;
-
-	i->tex = SDL_CreateTextureFromSurface(r, s);
-	//SDL_QueryTexture(image->tex, NULL, NULL, &image->src->w, &image->src->h);
-	return i;
+	SDL_Rect r = {x*t_w, y*t_h, t_w, t_h};
+	return r;
 }
 
-void TOOLS_SDL_Image_RenderCopy(SDL_Renderer* r, TOOLS_SDL_Image* i, int x, int y, int w, int h)
+void TOOLS_Render_Image_From_Texture(SDL_Renderer* rend, SDL_Texture* tex, SDL_Rect* src, int x, int y, int w, int h)
 {
-	SDL_RenderCopy(r, i->tex, i->src, &(SDL_Rect){x,y,w,h});
-}
-
-TOOLS_SDL_Image* TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(SDL_Renderer* r, SDL_Surface* s, int t_w, int t_h, int x, int y)
-{
-	//TOOLS_SDL_Image_Load_From_Surface(rend, tileset, 1+0*(TILE_SIZE_REAL+1),1+1*(TILE_SIZE_REAL+1),TILE_SIZE_REAL,TILE_SIZE_REAL), 
-	return TOOLS_SDL_Image_Load_From_Surface(r, s, x*t_w, y*t_h, t_w, t_h);
-}
-
-void TOOLS_SDL_Text_RenderCopy(SDL_Renderer* r, TTF_Font* f, char* s, int x, int y, int w, int h, SDL_Color c)
-{
-	SDL_Surface* surf = TTF_RenderText_Solid(f, s, c);
-	SDL_Texture* t = SDL_CreateTextureFromSurface(r, surf);
-	SDL_FreeSurface(surf);
-	SDL_RenderCopy(r, t, NULL, &(SDL_Rect){x, y, w, h});
-	SDL_DestroyTexture(t);
+	SDL_Rect dest = {x, y, w, h};
+	SDL_RenderCopy(rend, tex, src, &dest);
 }
 
 int TOOLS_Collide_Rect(SDL_Rect r1, SDL_Rect r2)
@@ -88,12 +74,12 @@ int TOOLS_Collide_Rect(SDL_Rect r1, SDL_Rect r2)
 		r1.y+r1.h>r2.y;
 }
 
-void TOOLS_Play_Animation(SDL_Renderer* r, TOOLS_SDL_Image** images, float* anim_c, int fps, int anim_len, int x, int y, int w, int h)
+void TOOLS_Play_Animation(SDL_Renderer* r, SDL_Rect* images, float* anim_c, int fps, int start, int end, int x, int y, int w, int h)
 {
 	float n = (float)fps/60.0f;
 	*anim_c+=n;
-	if(*anim_c>=anim_len){
-		*anim_c = 0;
+	if(*anim_c>=end+1){
+		*anim_c = start;
 	}
-	TOOLS_SDL_Image_RenderCopy(r, images[(int)*anim_c], x, y, w, h);
+	TOOLS_Render_Image_From_Texture(rend, tex, &images[(int)*anim_c], x, y, w, h);
 }

@@ -1,75 +1,83 @@
 #include"tiles.h"
 
-TOOLS_SDL_Image* archer_right[2];
-TOOLS_SDL_Image* archer_left[2];
-TOOLS_SDL_Image* bricks[9];
-TOOLS_SDL_Image* woods[9];
-TOOLS_SDL_Image* backBrick;
-TOOLS_SDL_Image* doors[2];
-TOOLS_SDL_Image* arrow[2];
-TOOLS_SDL_Image* barrel;
-TOOLS_SDL_Image* box;
-TOOLS_SDL_Image* moss;
-TOOLS_SDL_Image* spikes[4];
-TOOLS_SDL_Image* target[2];
-TOOLS_SDL_Image* rat[2];
-TOOLS_SDL_Image* banner;
-TOOLS_SDL_Image* chains;
+SDL_Rect archer_right[3];
+SDL_Rect archer_left[3];
+SDL_Rect bricks[9];
+SDL_Rect woods[9];
+SDL_Rect backBrick;
+SDL_Rect doors[2];
+SDL_Rect arrow[2];
+SDL_Rect barrel;
+SDL_Rect box;
+SDL_Rect moss;
+SDL_Rect spikes[4];
+SDL_Rect target[2];
+SDL_Rect rat[2];
+SDL_Rect banner;
+SDL_Rect chains;
+SDL_Rect woodBricks[4];
 
-void TILES_Load_Tiles(SDL_Surface* tileset)
+void TILES_Load_Tiles()
 {
-    archer_right[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 0, 0);
-    archer_right[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 0);
+    archer_right[0] = TOOLS_Get_Image_Src(0, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
+    archer_right[1] = TOOLS_Get_Image_Src(1, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
+    archer_right[2] = TOOLS_Get_Image_Src(2, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
 	
-    archer_left[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 0);
-    archer_left[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 0);
+    archer_left[0] = TOOLS_Get_Image_Src(3, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
+    archer_left[1] = TOOLS_Get_Image_Src(4, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
+    archer_left[2] = TOOLS_Get_Image_Src(5, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
 	
-	bricks[0] =	TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 0, 1);
-	bricks[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 1);
-	bricks[2] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 1);
-	bricks[3] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 1);
-	bricks[4] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 1);
-	bricks[5] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 0, 2);
-	bricks[6] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 2);
-	bricks[7] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 2);
-	bricks[8] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 2);
+	bricks[0] =	TOOLS_Get_Image_Src(0, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[1] = TOOLS_Get_Image_Src(1, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[2] = TOOLS_Get_Image_Src(2, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[3] = TOOLS_Get_Image_Src(3, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[4] = TOOLS_Get_Image_Src(4, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[5] = TOOLS_Get_Image_Src(0, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[6] = TOOLS_Get_Image_Src(1, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[7] = TOOLS_Get_Image_Src(2, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	bricks[8] = TOOLS_Get_Image_Src(3, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-    woods[0] =TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 0, 3);
-	woods[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 3);
-	woods[2] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 3);
-	woods[3] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 3);
-	woods[4] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 3);
-	woods[5] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 0, 4);
-	woods[6] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 1, 4);
-	woods[7] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 2, 4);
-	woods[8] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 3, 4);
+    woods[0] =TOOLS_Get_Image_Src(0, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[1] = TOOLS_Get_Image_Src(1, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[2] = TOOLS_Get_Image_Src(2, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[3] = TOOLS_Get_Image_Src(3, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[4] = TOOLS_Get_Image_Src(4, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[5] = TOOLS_Get_Image_Src(0, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[6] = TOOLS_Get_Image_Src(1, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[7] = TOOLS_Get_Image_Src(2, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woods[8] = TOOLS_Get_Image_Src(3, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	backBrick = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 3);
+	backBrick = TOOLS_Get_Image_Src(7, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	doors[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 0);
-	doors[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 0);
+	doors[0] = TOOLS_Get_Image_Src(6, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	doors[1] = TOOLS_Get_Image_Src(7, 0, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	arrow[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 0);
-	arrow[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 0);
+	barrel =  TOOLS_Get_Image_Src(5, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	barrel =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 1);
+	box =  TOOLS_Get_Image_Src(6, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	box =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 1);
+	moss =  TOOLS_Get_Image_Src(7, 1, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	moss =  TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 1);
+	spikes[0] = TOOLS_Get_Image_Src(4, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	spikes[1] = TOOLS_Get_Image_Src(5, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	spikes[2] = TOOLS_Get_Image_Src(6, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	spikes[3] = TOOLS_Get_Image_Src(7, 2, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	spikes[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 2);
-	spikes[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 2);
-	spikes[2] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 2);
-	spikes[3] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 2);
+	target[0] = TOOLS_Get_Image_Src(5, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	target[1] = TOOLS_Get_Image_Src(6, 3, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	target[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 3);
-	target[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 3);
+	rat[0] = TOOLS_Get_Image_Src(6, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	rat[1] = TOOLS_Get_Image_Src(7, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	rat[0] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 6, 4);
-	rat[1] = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 7, 4);
-
-	chains = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 4, 4);
+	chains = TOOLS_Get_Image_Src(4, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
 	
-	banner = TOOLS_SDL_Image_Load_Tile_From_Tileset_Surface(rend, tileset, TILE_SIZE_REAL, TILE_SIZE_REAL, 5, 4);
+	banner = TOOLS_Get_Image_Src(5, 4, TILE_SIZE_REAL, TILE_SIZE_REAL);
+
+	woodBricks[0] = TOOLS_Get_Image_Src(0, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woodBricks[1] = TOOLS_Get_Image_Src(1, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woodBricks[2] = TOOLS_Get_Image_Src(2, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	woodBricks[3] = TOOLS_Get_Image_Src(3, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+
+	arrow[0] = TOOLS_Get_Image_Src(4, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	arrow[1] = TOOLS_Get_Image_Src(5, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
 }

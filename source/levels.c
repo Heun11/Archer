@@ -25,7 +25,7 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
         int y = i/map->w;
         int tile = map->l0[i];
         if(tile==1){
-            TOOLS_SDL_Image_RenderCopy(rend, backBrick, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &backBrick, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
     for(int i=0;i<map->h*map->w;i++){
@@ -33,10 +33,13 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
         int y = i/map->w;
         int tile = map->l1[i];
         if(tile>=1 && tile<=9){
-            TOOLS_SDL_Image_RenderCopy(rend, bricks[tile-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &bricks[tile-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile>=10 && tile<=19){
-            TOOLS_SDL_Image_RenderCopy(rend, woods[tile-9-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &woods[tile-9-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+        }
+        if(tile>=20 && tile<=23){
+            TOOLS_Render_Image_From_Texture(rend, tex, &woodBricks[tile-19-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
     for(int i=0;i<map->h*map->w;i++){
@@ -44,40 +47,42 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
         int y = i/map->w;
         int tile = map->l2[i];
         if(tile==1){
-            TOOLS_SDL_Image_RenderCopy(rend, barrel, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &barrel, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile==2){
-            TOOLS_SDL_Image_RenderCopy(rend, box, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &box, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile==3){
-            TOOLS_SDL_Image_RenderCopy(rend, moss, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &moss, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile==4){
-            TOOLS_SDL_Image_RenderCopy(rend, chains, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &chains, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile==5){
-            TOOLS_SDL_Image_RenderCopy(rend, banner, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &banner, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
         if(tile==6){
-            TOOLS_SDL_Image_RenderCopy(rend, doors[0], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+            TOOLS_Render_Image_From_Texture(rend, tex, &doors[0], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
 }
 
 
-// LEVEL local variables
-float anim_c1 = 0;
-float anim_c2 = 0;
-
-void LEVELS_level_1(Player* p)
+void LEVELS_level_1(PLAYER_Player* player)
 {
-    TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/test.map");
+    TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level1.map");
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
-    // level code (player, usable objects)
-	TOOLS_Play_Animation(rend, archer_right, &anim_c1, 5, 2, 100,400,info.ts,info.ts);
-	TOOLS_Play_Animation(rend, archer_left, &anim_c2, 5, 2, 100,400+info.ts,info.ts,info.ts);
+    if(player->x==-1&&player->y==-1&&player->w==-1&&player->h==-1){
+        player->w = info.ts;
+        player->h = info.ts;
+        player->x = 1*info.ts;
+        player->y = 1*info.ts;
+        player->speed = 200;
+    }
+
+    PLAYER_Update_Player(player);
 
     TOOLS_Free_Tilemap(&map);
 }
