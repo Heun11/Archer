@@ -81,40 +81,12 @@ float anim_l_c = 0;
 
 void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o)
 {
-    // p->y_vel = 0;
-    // p->x_vel = 0;
-
-    // // if(p->up&&!p->down){p->y_vel = -p->speed;}
-    // // if(p->down&&!p->up){p->y_vel = p->speed;}
-    // // if(p->left&&!p->right){p->x_vel = -p->speed;p->last=1;}
-    // // if(p->right&&!p->left){p->x_vel = p->speed;p->last=0;}
-
-    // p->rect.y += (int) (p->y_vel/60);
-    // p->rect.x += (int) (p->x_vel/60);
-    
-    // if(p->right&&!p->left){
-    //     TOOLS_Play_Animation(rend, archer_right, &anim_r_c, 5, 1, 2, p->rect.x,p->rect.y,p->rect.w,p->rect.h);
-    // }
-    // else if(p->left&&!p->right){
-    //     TOOLS_Play_Animation(rend, archer_left, &anim_l_c, 5, 1, 2, p->rect.x,p->rect.y,p->rect.w,p->rect.h);
-    // }
-    // else{
-    //     if(p->last){
-    //         TOOLS_Render_Image_From_Texture(rend, tex, &archer_left[0], p->rect.x, p->rect.y, p->rect.w, p->rect.h);
-    //     }
-    //     else{
-    //         TOOLS_Render_Image_From_Texture(rend, tex, &archer_right[0], p->rect.x, p->rect.y, p->rect.w, p->rect.h);
-    //     }
-    // }
-
     p->y_vel += p->gravity;
     p->rect.y += (int) p->y_vel;
     PLAYER_Collision_Vertical(p, m, ts, x_o, y_o);
 
     p->rect.x += (int) (p->x_vel*p->speed);
     PLAYER_Collision_Horizontal(p, m, ts, x_o, y_o);
-
-    // TOOLS_Render_Image_From_Texture(rend, tex, &barrel, p->rect.x, p->rect.y, p->rect.w, p->rect.h);
 
     if(p->x_vel>0){
         TOOLS_Play_Animation(rend, archer_right, &anim_r_c, 5, 1, 2, p->rect.x,p->rect.y,p->rect.w,p->rect.h);
@@ -130,4 +102,5 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
             TOOLS_Render_Image_From_Texture(rend, tex, &archer_right[0], p->rect.x, p->rect.y, p->rect.w, p->rect.h);
         }
     }
+    SDL_RenderDrawRect(rend, &p->rect);
 }

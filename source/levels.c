@@ -2,12 +2,14 @@
 
 struct LEVELS_level_render_info LEVELS_Get_Level_Render_Info(TOOLS_TileMap* map)
 {
+    float n1;
+    float n2;
     struct LEVELS_level_render_info i; 
-    i.n1 = SCREEN_WIDTH/SCREEN_HEIGHT;
-    i.n2 = map->w/map->h;
+    n1 = (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT;
+    n2 = (float)map->w/(float)map->h;
     i.x_o = 0;
     i.y_o = 0;
-    if(i.n2>i.n1){
+    if(n2>n1){
         i.ts = SCREEN_WIDTH/map->w;
         i.y_o = SCREEN_HEIGHT/2-(map->h*i.ts)/2;
     }
@@ -77,14 +79,11 @@ void LEVELS_level_1(PLAYER_Player* player)
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
         player->rect.w = info.ts;
         player->rect.h = info.ts;
-        player->rect.x = 2*info.ts;
-        player->rect.y = 2*info.ts;
+        player->rect.x = 1*info.ts+info.x_o;
+        player->rect.y = 1*info.ts+info.y_o;
         player->speed = (float)info.ts/15;
         player->gravity = (float)info.ts/90;
         player->jump_speed = -((float)info.ts/3.75f);
-        // self.speed = block_size/15
-        // self.gravity = block_size/90
-        // self.jump_speed = -(block_size/3.75)
     }
 
     PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o);

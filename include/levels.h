@@ -2,7 +2,7 @@
 #define LEVELS_H
 
 struct LEVELS_level_render_info{
-    int n1, n2, ts, y_o, x_o;
+    int ts, y_o, x_o;
 };
 
 #include"main.h"

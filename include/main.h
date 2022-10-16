@@ -6,8 +6,8 @@
 
 #define TILE_SIZE_REAL 16
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 640
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 
 extern SDL_Renderer* rend;
 extern SDL_Texture* tex;

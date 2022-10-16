@@ -5,6 +5,8 @@
 
 SDL_Renderer* rend;
 SDL_Texture* tex;
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;
 
 int main(int argc, char** argv)
 {
@@ -14,7 +16,13 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	
-	SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	SCREEN_WIDTH = DM.w;
+	SCREEN_HEIGHT = DM.h;
+	Uint32 win_flags = SDL_WINDOW_FULLSCREEN_DESKTOP;	
+	// SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, win_flags);
 	if(!win){
 		SDL_Quit();
 		return 1;
@@ -59,6 +67,9 @@ int main(int argc, char** argv)
 					key = event.key.keysym.scancode;
 					PLAYER_Key_Down_Player(&player, key);
 					switch(key){
+						case SDL_SCANCODE_ESCAPE:
+							run = 0;
+							break;
 						default:
 							break;
 					}

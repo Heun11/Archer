@@ -5,10 +5,6 @@
 
 typedef struct{
     SDL_Rect rect;
-    // int left;
-    // int right;
-    // int up;
-    // int down;
     int last;
     float x_vel;
     float y_vel;
