@@ -5,6 +5,7 @@
 
 SDL_Renderer* rend;
 SDL_Texture* tex;
+TTF_Font* font;
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
 
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
 	SDL_GetCurrentDisplayMode(0, &DM);
 	SCREEN_WIDTH = DM.w;
 	SCREEN_HEIGHT = DM.h;
-	Uint32 win_flags = SDL_WINDOW_FULLSCREEN_DESKTOP;	
+	Uint32 win_flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
 	// SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	SDL_Window* win = SDL_CreateWindow("Archer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, win_flags);
 	if(!win){
@@ -47,7 +48,7 @@ int main(int argc, char** argv)
 	int key;
 
 	TTF_Init();
-	TTF_Font* font = TTF_OpenFont("resources/ancient.ttf", 100);
+	font = TTF_OpenFont("resources/ancient.ttf", 100);
 	SDL_Color text_color = {252, 3, 215};
 
 	char fps_str[10];

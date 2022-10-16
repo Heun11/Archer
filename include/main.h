@@ -11,6 +11,7 @@ extern int SCREEN_HEIGHT;
 
 extern SDL_Renderer* rend;
 extern SDL_Texture* tex;
+extern TTF_Font* font;
 
 #include"tiles.h"
 #include"player.h"

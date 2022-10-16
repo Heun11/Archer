@@ -77,16 +77,24 @@ void LEVELS_level_1(PLAYER_Player* player)
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
-        player->rect.w = info.ts;
-        player->rect.h = info.ts;
-        player->rect.x = 1*info.ts+info.x_o;
-        player->rect.y = 1*info.ts+info.y_o;
-        player->speed = (float)info.ts/15;
-        player->gravity = (float)info.ts/90;
-        player->jump_speed = -((float)info.ts/3.75f);
+        PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 1, 8);   
+    }
+    PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o);
+
+    SDL_Rect target_r = {1*info.ts+info.x_o, 5*info.ts+info.y_o, info.ts, info.ts};
+    TOOLS_Render_Image_From_Texture(rend, tex, &target[0], target_r.x, target_r.y, target_r.w, target_r.h);
+    static int target_shooted = 0;
+
+    if(!player->can_shoot){
+        if(TOOLS_Collide_Rect(player->arrow, target_r)){
+            player->can_shoot = 1;
+            target_shooted = 1;
+        }
     }
 
-    PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o);
+    if(target_shooted){
+        TOOLS_SDL_Text_RenderCopy(rend, font, "Ende", 100, 100, 200, 80, (SDL_Color){255,0,0});
+    }
 
     TOOLS_Free_Tilemap(&map);
 }
