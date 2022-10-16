@@ -74,15 +74,20 @@ void LEVELS_level_1(PLAYER_Player* player)
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
-    if(player->x==-1&&player->y==-1&&player->w==-1&&player->h==-1){
-        player->w = info.ts;
-        player->h = info.ts;
-        player->x = 1*info.ts;
-        player->y = 1*info.ts;
-        player->speed = 200;
+    if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
+        player->rect.w = info.ts;
+        player->rect.h = info.ts;
+        player->rect.x = 2*info.ts;
+        player->rect.y = 2*info.ts;
+        player->speed = (float)info.ts/15;
+        player->gravity = (float)info.ts/90;
+        player->jump_speed = -((float)info.ts/3.75f);
+        // self.speed = block_size/15
+        // self.gravity = block_size/90
+        // self.jump_speed = -(block_size/3.75)
     }
 
-    PLAYER_Update_Player(player);
+    PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o);
 
     TOOLS_Free_Tilemap(&map);
 }
