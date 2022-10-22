@@ -20,20 +20,14 @@ struct LEVELS_level_render_info LEVELS_Get_Level_Render_Info(TOOLS_TileMap* map)
     return i;
 }
 
-void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, int tile_w, int tile_h)
+void LEVELS_Render_Tile(int l, int x, int y, int tile, int off_x, int off_y, int tile_w, int tile_h)
 {
-    for(int i=0;i<map->h*map->w;i++){
-        int x = i%map->w; 
-        int y = i/map->w;
-        int tile = map->l0[i];
+    if(l==0){
         if(tile==1){
             TOOLS_Render_Image_From_Texture(rend, tex, &backBrick, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
-    for(int i=0;i<map->h*map->w;i++){
-        int x = i%map->w; 
-        int y = i/map->w;
-        int tile = map->l1[i];
+    if(l==1){
         if(tile>=1 && tile<=9){
             TOOLS_Render_Image_From_Texture(rend, tex, &bricks[tile-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
@@ -44,10 +38,7 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
             TOOLS_Render_Image_From_Texture(rend, tex, &woodBricks[tile-19-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
-    for(int i=0;i<map->h*map->w;i++){
-        int x = i%map->w; 
-        int y = i/map->w;
-        int tile = map->l2[i];
+    if(l==2){
         if(tile==1){
             TOOLS_Render_Image_From_Texture(rend, tex, &barrel, off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
@@ -69,6 +60,20 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
 	}
 }
 
+void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, int tile_w, int tile_h)
+{
+    for(int i=0;i<map->h*map->w;i++){
+        int x = i%map->w; 
+        int y = i/map->w;
+        int t0 = map->l0[i];
+        int t1 = map->l1[i];
+        int t2 = map->l2[i];
+        LEVELS_Render_Tile(0, x, y, t0, off_x, off_y, tile_w, tile_h);
+        LEVELS_Render_Tile(1, x, y, t1, off_x, off_y, tile_w, tile_h);
+        LEVELS_Render_Tile(2, x, y, t2, off_x, off_y, tile_w, tile_h);
+	}
+}
+
 
 void LEVELS_level_1(PLAYER_Player* player)
 {
@@ -76,24 +81,35 @@ void LEVELS_level_1(PLAYER_Player* player)
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
+    static int target_shooted = 0;
+    int bridge_len = 3;
+    LEVEL_Block bridge[] = {
+        {7,5,10},{8,5,10},{9,5,10}
+    };
+
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
         PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 1, 8);   
     }
-    PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o);
+    if(target_shooted){
+        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, bridge, bridge_len);
+        for(int i=0;i<bridge_len;i++){
+            if(bridge[i].t>0){
+                LEVELS_Render_Tile(1, bridge[i].x, bridge[i].y, bridge[i].t, info.x_o, info.y_o, info.ts, info.ts);
+            }
+        }
+    }
+    else{
+        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, bridge_len);
+    }
 
     SDL_Rect target_r = {1*info.ts+info.x_o, 5*info.ts+info.y_o, info.ts, info.ts};
     TOOLS_Render_Image_From_Texture(rend, tex, &target[0], target_r.x, target_r.y, target_r.w, target_r.h);
-    static int target_shooted = 0;
 
     if(!player->can_shoot){
         if(TOOLS_Collide_Rect(player->arrow, target_r)){
             player->can_shoot = 1;
             target_shooted = 1;
         }
-    }
-
-    if(target_shooted){
-        TOOLS_SDL_Text_RenderCopy(rend, font, "Ende", 100, 100, 200, 80, (SDL_Color){255,0,0});
     }
 
     TOOLS_Free_Tilemap(&map);

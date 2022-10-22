@@ -3,6 +3,8 @@
 
 #include"sdl.h"
 #include"tools.h"
+#include"stdio.h"
+#include"stdlib.h"
 
 #define TILE_SIZE_REAL 16
 

@@ -22,13 +22,14 @@ typedef struct{
 }PLAYER_Player;
 
 #include"main.h"
+#include"levels.h"
 
 PLAYER_Player PLAYER_Create_Player();
 void PLAYER_Set_Player(PLAYER_Player* p, int ts, int x_o, int y_o, int x, int y);
 void PLAYER_Key_Up_Player(PLAYER_Player* p, int key);
 void PLAYER_Key_Down_Player(PLAYER_Player* p, int key);
-void PLAYER_Collision_Horizontal(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o);
-void PLAYER_Collision_Vertical(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o);
-void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o);
+void PLAYER_Collision_Horizontal(PLAYER_Player* p, SDL_Rect t);
+void PLAYER_Collision_Vertical(PLAYER_Player* p, SDL_Rect t);
+void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o, LEVEL_Block* blocks, int blocks_len);
 
 #endif
