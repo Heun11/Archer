@@ -36,6 +36,7 @@ int main(int argc, char** argv)
 		SDL_Quit();
 		return 1;
 	}
+	SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 	float elapsed = 1;
 	
 	SDL_Surface* tileset = IMG_Load("resources/archer-tileset-new.png");
@@ -52,6 +53,8 @@ int main(int argc, char** argv)
 	SDL_Color text_color = {252, 3, 215};
 
 	char fps_str[10];
+
+	int level_count = 0;
 
 	int run = 1;
 	while(run){
@@ -89,7 +92,15 @@ int main(int argc, char** argv)
 		SDL_RenderClear(rend);
     	// SDL_SetRenderDrawColor(rend, 255, 0, 0, 255); // background color
 
-		LEVELS_level_1(&player);
+		if(level_count==0){
+			level_count = LEVELS_Menu();
+		}
+		else if(level_count==1){
+			level_count = LEVELS_level_1(&player);
+		}
+		else{
+			level_count = LEVELS_level_2(&player);
+		}
 
 		snprintf(fps_str, 10, "fps:%d", (int)(1.0f/elapsed));
 		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);

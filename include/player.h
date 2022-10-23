@@ -21,6 +21,8 @@ typedef struct{
     int arrow_speed;
 }PLAYER_Player;
 
+extern float PLAYER_LightMap[5][5];
+
 #include"main.h"
 #include"levels.h"
 
@@ -30,6 +32,6 @@ void PLAYER_Key_Up_Player(PLAYER_Player* p, int key);
 void PLAYER_Key_Down_Player(PLAYER_Player* p, int key);
 void PLAYER_Collision_Horizontal(PLAYER_Player* p, SDL_Rect t);
 void PLAYER_Collision_Vertical(PLAYER_Player* p, SDL_Rect t);
-void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o, LEVEL_Block* blocks, int blocks_len);
+void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o, LEVEL_Block* blocks, int* active_blocks, int blocks_len);
 
 #endif

@@ -74,36 +74,80 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
 	}
 }
 
+int LEVELS_Menu()
+{
+    SDL_Rect button = {SCREEN_WIDTH/2-200,SCREEN_HEIGHT/2-100,400,200};
+	TOOLS_SDL_Text_RenderCopy(rend, font, "play!", button.x, button.y, button.w, button.h, (SDL_Color){255,255,255});
 
-void LEVELS_level_1(PLAYER_Player* player)
+    int mouse_x, mouse_y, buttons;
+    buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+    if(buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
+        SDL_Rect mouse = {mouse_x-5, mouse_y-5, 10,10};
+        if(TOOLS_Collide_Rect(mouse, button)){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int LEVELS_level_1(PLAYER_Player* player)
 {
     TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level1.map");
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
     LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
 
     static int target_shooted = 0;
+    int blocks_len = 3;
+    int bridge_start = 0;
     int bridge_len = 3;
-    LEVEL_Block bridge[] = {
+    LEVEL_Block blocks[] = {
         {7,5,10},{8,5,10},{9,5,10}
+    };
+    int active_blocks[] = {
+        1,1,1
     };
 
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
         PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 1, 8);   
     }
     if(target_shooted){
-        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, bridge, bridge_len);
-        for(int i=0;i<bridge_len;i++){
-            if(bridge[i].t>0){
-                LEVELS_Render_Tile(1, bridge[i].x, bridge[i].y, bridge[i].t, info.x_o, info.y_o, info.ts, info.ts);
+        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, blocks, active_blocks, blocks_len);
+        for(int i=bridge_start;i<bridge_len+bridge_start;i++){
+            if(active_blocks[i]==1 && blocks[i].t>0){
+                LEVELS_Render_Tile(1, blocks[i].x, blocks[i].y, blocks[i].t, info.x_o, info.y_o, info.ts, info.ts);
             }
         }
     }
     else{
-        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, bridge_len);
+        PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, NULL, 0);
     }
 
     SDL_Rect target_r = {1*info.ts+info.x_o, 5*info.ts+info.y_o, info.ts, info.ts};
     TOOLS_Render_Image_From_Texture(rend, tex, &target[0], target_r.x, target_r.y, target_r.w, target_r.h);
+
+    SDL_Rect doors_r = {2*info.ts+info.x_o, 3*info.ts+info.y_o, info.ts, info.ts};
+    TOOLS_Render_Image_From_Texture(rend, tex, &doors[1], doors_r.x, doors_r.y, doors_r.w, doors_r.h);
+
+    // done drawing
+    for(int x = 0;x<map.w;x++){
+        for(int y = 0;y<map.h;y++){
+            int player_tile[2] = {(int)player->rect.x/info.ts, (int)player->rect.y/info.ts};
+            float a = .2f;
+            if(x>=player_tile[0]-2 && x<=player_tile[0]+2 && y>=player_tile[1]-2 && y<=player_tile[1]+2){
+                a = PLAYER_LightMap[2+x-player_tile[0]][2+y-player_tile[1]];
+            }
+            if(!player->can_shoot){    
+                int arrow_tile[2] = {(int)player->arrow.x/info.ts, (int)player->arrow.y/info.ts};
+                if(x>=arrow_tile[0]-2 && x<=arrow_tile[0]+2 && y>=arrow_tile[1]-2 && y<=arrow_tile[1]+2){
+                    if(a<PLAYER_LightMap[2+x-arrow_tile[0]][2+y-arrow_tile[1]]){
+                        a = PLAYER_LightMap[2+x-arrow_tile[0]][2+y-arrow_tile[1]];
+                    }
+                }
+            }
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, (int)(255-255*a));
+			SDL_RenderFillRect(rend, &(SDL_Rect){info.x_o+info.ts*x, info.y_o+info.ts*y, info.ts, info.ts});
+        }
+    }
 
     if(!player->can_shoot){
         if(TOOLS_Collide_Rect(player->arrow, target_r)){
@@ -112,5 +156,25 @@ void LEVELS_level_1(PLAYER_Player* player)
         }
     }
 
+    if(TOOLS_Collide_Rect(player->rect, doors_r)){
+        return 2;
+    }
+
     TOOLS_Free_Tilemap(&map);
+    return 1;
+}
+
+int LEVELS_level_2(PLAYER_Player* player)
+{
+    TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/test.map");
+    struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
+    LEVELS_Render_Level_From_Tilemap(&map, info.x_o, info.y_o, info.ts, info.ts);
+
+    if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
+        PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 1, 8);   
+    }
+    PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, NULL, 0);
+
+    TOOLS_Free_Tilemap(&map);
+    return 2;
 }

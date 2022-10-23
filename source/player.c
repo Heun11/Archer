@@ -1,5 +1,13 @@
 #include"player.h"
 
+float PLAYER_LightMap[5][5] = {
+    {.2f,.25f,.5f,.25f,.2f},
+    {.25f,.75f,1.0f,.75f,.25f},
+    {.5f,1.0f,1.0f,1.0f,.5f},
+    {.25f,.75f,1.0f,.75f,.25f},
+    {.2f,.25f,.5f,.25f,.2f}
+};
+
 PLAYER_Player PLAYER_Create_Player()
 {
     PLAYER_Player p = {.x=-1,.y=-1,.rect={-1,-1,-1,-1},.speed=-1,.x_vel=0,.y_vel=0,.gravity=-1,.jump_speed=-1,
@@ -102,7 +110,7 @@ void PLAYER_Collision_Vertical(PLAYER_Player* p, SDL_Rect t)
 float anim_r_c = 0;
 float anim_l_c = 0;
 
-void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o, LEVEL_Block* blocks, int blocks_len)
+void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, int y_o, LEVEL_Block* blocks, int* active_blocks, int blocks_len)
 {
     if(p->r&&!p->l){
         p->x_vel = 1;
@@ -117,6 +125,7 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
     p->y_vel += p->gravity;
     p->y += p->y_vel;
     p->rect.y = (int)p->y;
+    p->on_ground = 0;
 
     for(int i=0;i<m->h;i++){
         for(int j=0;j<m->w;j++){
@@ -126,13 +135,11 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
             }
         }
     }
-    if(blocks!=NULL){
+    if(blocks!=NULL && active_blocks!=NULL){
         for(int i=0;i<blocks_len;i++){
-            if(blocks[i].t>0){
+            if(active_blocks[i]==1 && blocks[i].t>0){
                 SDL_Rect t = {blocks[i].x*ts+x_o, blocks[i].y*ts+y_o, ts, ts};
                 PLAYER_Collision_Vertical(p, t);
-                printf("%d\n", blocks[i].t);
-                fflush(stdout);
             }
         }
     }
@@ -148,9 +155,9 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
             }
         }
     }
-    if(blocks!=NULL){
+    if(blocks!=NULL && active_blocks!=NULL){
         for(int i=0;i<blocks_len;i++){
-            if(blocks[i].t>0){
+            if(active_blocks[i]==1 && blocks[i].t>0){
                 SDL_Rect t = {blocks[i].x*ts+x_o, blocks[i].y*ts+y_o, ts, ts};
                 PLAYER_Collision_Horizontal(p, t);
             }

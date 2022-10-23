@@ -13,6 +13,8 @@ typedef struct{
 
 #include"main.h"
 
-void LEVELS_level_1(PLAYER_Player* p);
+int LEVELS_Menu();
+int LEVELS_level_1(PLAYER_Player* p);
+int LEVELS_level_2(PLAYER_Player* p);
 
 #endif
