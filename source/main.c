@@ -51,17 +51,15 @@ int main(int argc, char** argv)
 	font = TTF_OpenFont("resources/ancient.ttf", 100);
 	SDL_Color text_color = {252, 3, 215};
 
+	float elapsed = 1;
 	char fps_str[10];
-	int fps = 60;
-	int desired_delta = 1000/fps;
-	int delta = 1;
 
 	int level_count = 0;
 
 	int run = 1;
 	while(run){
 
-		int start = SDL_GetTicks();
+		Uint64 start = SDL_GetPerformanceCounter();
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)){
@@ -104,15 +102,14 @@ int main(int argc, char** argv)
 			level_count = LEVELS_level_2(&player);
 		}
 
-		snprintf(fps_str, 10, "fps:%d", 1000/delta);
+		snprintf(fps_str, 10, "fps:%d", (int)(1.0f/elapsed));
 		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);
-
 		SDL_RenderPresent(rend);
 	
-		delta = SDL_GetTicks()-start;
-		if(delta<desired_delta){
-			SDL_Delay(desired_delta-delta);
-		}
+		Uint64 end = SDL_GetPerformanceCounter();
+		elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+		// printf("fps %f\n", 1.0f/elapsed);
+		SDL_Delay(elapsed);
 	}
 	
 	SDL_DestroyRenderer(rend);

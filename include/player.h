@@ -21,7 +21,7 @@ typedef struct{
     int arrow_speed;
 }PLAYER_Player;
 
-extern float PLAYER_LightMap[5][5];
+extern float PLAYER_LightMap[];
 
 #include"main.h"
 #include"levels.h"

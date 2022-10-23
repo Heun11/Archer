@@ -8,15 +8,16 @@
 
 #define TILE_SIZE_REAL 16
 
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
-
 extern SDL_Renderer* rend;
 extern SDL_Texture* tex;
 extern TTF_Font* font;
 
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
+
 #include"tiles.h"
 #include"player.h"
+#include"light.h"
 #include"levels.h"
 
 #endif

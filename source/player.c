@@ -1,11 +1,11 @@
 #include"player.h"
 
-float PLAYER_LightMap[5][5] = {
-    {.2f,.25f,.5f,.25f,.2f},
-    {.25f,.75f,1.0f,.75f,.25f},
-    {.5f,1.0f,1.0f,1.0f,.5f},
-    {.25f,.75f,1.0f,.75f,.25f},
-    {.2f,.25f,.5f,.25f,.2f}
+float PLAYER_LightMap[25] = {
+    .2f,.5f,.5f,.5f,.2f,
+    .5f,.75f,.8f,.75f,.5f,
+    .5f,.8f,1.0f,.8f,.5f,
+    .5f,.75f,.8f,.75f,.5f,
+    .2f,.5f,.5f,.5f,.2f
 };
 
 PLAYER_Player PLAYER_Create_Player()

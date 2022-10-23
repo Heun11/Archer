@@ -128,26 +128,13 @@ int LEVELS_level_1(PLAYER_Player* player)
     SDL_Rect doors_r = {2*info.ts+info.x_o, 3*info.ts+info.y_o, info.ts, info.ts};
     TOOLS_Render_Image_From_Texture(rend, tex, &doors[1], doors_r.x, doors_r.y, doors_r.w, doors_r.h);
 
-    // done drawing
-    for(int x = 0;x<map.w;x++){
-        for(int y = 0;y<map.h;y++){
-            int player_tile[2] = {(int)player->rect.x/info.ts, (int)player->rect.y/info.ts};
-            float a = .2f;
-            if(x>=player_tile[0]-2 && x<=player_tile[0]+2 && y>=player_tile[1]-2 && y<=player_tile[1]+2){
-                a = PLAYER_LightMap[2+x-player_tile[0]][2+y-player_tile[1]];
-            }
-            if(!player->can_shoot){    
-                int arrow_tile[2] = {(int)player->arrow.x/info.ts, (int)player->arrow.y/info.ts};
-                if(x>=arrow_tile[0]-2 && x<=arrow_tile[0]+2 && y>=arrow_tile[1]-2 && y<=arrow_tile[1]+2){
-                    if(a<PLAYER_LightMap[2+x-arrow_tile[0]][2+y-arrow_tile[1]]){
-                        a = PLAYER_LightMap[2+x-arrow_tile[0]][2+y-arrow_tile[1]];
-                    }
-                }
-            }
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, (int)(255-255*a));
-			SDL_RenderFillRect(rend, &(SDL_Rect){info.x_o+info.ts*x, info.y_o+info.ts*y, info.ts, info.ts});
-        }
-    }
+
+    LIGHT_LightSource srcs[1] = {
+        {player->rect.x/info.ts,player->rect.y/info.ts,5,5}
+    };
+    LIGHT_Add_LightMap_To_LightSource(&srcs[0], PLAYER_LightMap);
+    LIGHT_Render_Light(srcs, 1, map.w, map.h, info.ts, info.x_o, info.y_o);
+
 
     if(!player->can_shoot){
         if(TOOLS_Collide_Rect(player->arrow, target_r)){
