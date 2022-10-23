@@ -37,7 +37,6 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
-	float elapsed = 1;
 	
 	SDL_Surface* tileset = IMG_Load("resources/archer-tileset-new.png");
 	tex = SDL_CreateTextureFromSurface(rend, tileset);
@@ -53,13 +52,16 @@ int main(int argc, char** argv)
 	SDL_Color text_color = {252, 3, 215};
 
 	char fps_str[10];
+	int fps = 60;
+	int desired_delta = 1000/fps;
+	int delta = 1;
 
 	int level_count = 0;
 
 	int run = 1;
 	while(run){
 
-		Uint64 start = SDL_GetPerformanceCounter();
+		int start = SDL_GetTicks();
 
 		SDL_Event event;
 		while(SDL_PollEvent(&event)){
@@ -102,17 +104,15 @@ int main(int argc, char** argv)
 			level_count = LEVELS_level_2(&player);
 		}
 
-		snprintf(fps_str, 10, "fps:%d", (int)(1.0f/elapsed));
+		snprintf(fps_str, 10, "fps:%d", 1000/delta);
 		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);
 
 		SDL_RenderPresent(rend);
 	
-		Uint64 end = SDL_GetPerformanceCounter();
-		elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
-		// printf("fps %f\n", 1.0f/elapsed);
-
-		SDL_Delay(elapsed);
-		
+		delta = SDL_GetTicks()-start;
+		if(delta<desired_delta){
+			SDL_Delay(desired_delta-delta);
+		}
 	}
 	
 	SDL_DestroyRenderer(rend);

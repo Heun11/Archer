@@ -147,12 +147,12 @@ def draw_window(mouse, click, keys):
 
 	pygame.draw.rect(win, (100, 255, 100), pygame.Rect(100+width*size_of_square - size_of_square*2 + 300, height*size_of_square - size_of_square*2, size_of_square*2, size_of_square*2))
 
-	if pygame.Rect.colliderect(mouse, pygame.Rect(100+width*size_of_square - size_of_square*2 + 300, height*size_of_square - size_of_square*2, size_of_square*2, size_of_square*2)) and click:
+	if pygame.Rect.colliderect(mouse, pygame.Rect(width*size_of_square - size_of_square*2 + 300, height*size_of_square - size_of_square*2, size_of_square*2, size_of_square*2)) and click:
 		save()
 
 	if current_layer != None:
 		pygame.draw.rect(win, (255, 100, 100), pygame.Rect(100+width*size_of_square - size_of_square + 300, height*size_of_square - size_of_square*3 - 1, size_of_square, size_of_square))
-		if pygame.Rect.colliderect(mouse, pygame.Rect(100+width*size_of_square - size_of_square + 300, height*size_of_square - size_of_square*3 - 1, size_of_square, size_of_square)) and click:
+		if pygame.Rect.colliderect(mouse, pygame.Rect(width*size_of_square - size_of_square + 300, height*size_of_square - size_of_square*3 - 1, size_of_square, size_of_square)) and click:
 			for y in range(len(layout[current_layer])):
 				for x in range(len(layout[current_layer][y])):
 					layout[current_layer][y][x] = 0

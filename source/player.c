@@ -125,7 +125,6 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
     p->y_vel += p->gravity;
     p->y += p->y_vel;
     p->rect.y = (int)p->y;
-    p->on_ground = 0;
 
     for(int i=0;i<m->h;i++){
         for(int j=0;j<m->w;j++){

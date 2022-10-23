@@ -31,11 +31,11 @@ void LEVELS_Render_Tile(int l, int x, int y, int tile, int off_x, int off_y, int
         if(tile>=1 && tile<=9){
             TOOLS_Render_Image_From_Texture(rend, tex, &bricks[tile-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
-        if(tile>=10 && tile<=19){
+        if(tile>=10 && tile<=18){
             TOOLS_Render_Image_From_Texture(rend, tex, &woods[tile-9-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
-        if(tile>=20 && tile<=23){
-            TOOLS_Render_Image_From_Texture(rend, tex, &woodBricks[tile-19-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
+        if(tile>=19 && tile<=22){
+            TOOLS_Render_Image_From_Texture(rend, tex, &woodBricks[tile-18-1], off_x+x*tile_w, off_y+y*tile_h, tile_w, tile_h);
         }
 	}
     if(l==2){
@@ -108,7 +108,7 @@ int LEVELS_level_1(PLAYER_Player* player)
     };
 
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
-        PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 1, 8);   
+        PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 2, 10);   
     }
     if(target_shooted){
         PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, blocks, active_blocks, blocks_len);

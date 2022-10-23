@@ -5,8 +5,8 @@ MAPA:
     Ground layer:
         0 -> nic
         1-9 -> tehly
-        10-19 -> dreva
-        20-23 -> drevo tehla
+        10-18 -> dreva
+        19-22 -> drevo tehla
     Decor layer:
         0 -> nic
         1 -> sud
