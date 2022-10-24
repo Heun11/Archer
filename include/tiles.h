@@ -19,6 +19,8 @@ extern SDL_Rect rat[2];
 extern SDL_Rect banner;
 extern SDL_Rect chains;
 extern SDL_Rect woodBricks[4];
+extern SDL_Rect vent;
+extern SDL_Rect particle;
 
 void TILES_Load_Tiles();
 

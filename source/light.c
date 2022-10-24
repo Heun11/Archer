@@ -1,9 +1,24 @@
 #include"light.h"
 
-void LIGHT_Kill_LightSource(LIGHT_LightSource* s)
-{
-    free(s->light_map);
-}
+float LIGHT_Player_LightMap[81] = {
+    .2f,.25f,.3f,.3f,.3f,.3f,.3f,.25f,.2f,
+    .23f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.25f,
+    .3f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.3f,
+    .3f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.3f,
+    .3f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.3f,
+    .3f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.3f,
+    .3f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.3f,
+    .25f,.8f,.8f,.8f,.8f,.8f,.8f,.8f,.25f,
+    .2f,.25f,.3f,.3f,.3f,.3f,.3f,.25f,.2f
+};
+
+float LIGHT_Torch_LightMap[25] = {
+    .2f,.5f,.5f,.5f,.2f,
+    .5f,.75f,.8f,.75f,.5f,
+    .5f,.8f,1.0f,.8f,.5f,
+    .5f,.75f,.8f,.75f,.5f,
+    .2f,.5f,.5f,.5f,.2f
+};
 
 void LIGHT_Add_LightMap_To_LightSource(LIGHT_LightSource* s, float* l_map)
 {
@@ -13,22 +28,34 @@ void LIGHT_Add_LightMap_To_LightSource(LIGHT_LightSource* s, float* l_map)
     }
 }
 
-void LIGHT_Render_Light(LIGHT_LightSource* srcs, int srcs_len, int w, int h, int ts, int x_o, int y_o)
+void LIGHT_Add_LightSource_To_Light(LIGHT_Light* l, LIGHT_LightSource* s)
 {
-    float alpha = .2f;
+    if(l->s_len_now<l->s_len){
+        l->srcs[l->s_len_now] = s;
+        l->s_len_now+=1;
+    }
+}
+
+void LIGHT_Render_Light(LIGHT_Light* l, int x_o, int y_o)
+{
+    float alpha = l->default_l;
+    float a = l->default_l;
     int o_x, o_y;
-    for(int x = 0;x<w;x++){
-        for(int y = 0;y<h;y++){
-            alpha = .2f;
-            for(int i=0;i<srcs_len;i++){
-                o_x = (int)(srcs[i].light_map_w/2);
-                o_y = (int)(srcs[i].light_map_h/2);
-                if(x>=srcs[i].tile_x-o_x && x<=srcs[i].tile_x+o_x && y>=srcs[i].tile_y-o_y && y<=srcs[i].tile_y+o_y){
-                    alpha = srcs[i].light_map[((o_y+y-srcs[i].tile_y)*srcs[i].light_map_w+(o_x+x-srcs[i].tile_x))];
+    for(int x = 0;x<l->w;x++){
+        for(int y = 0;y<l->h;y++){
+            alpha = l->default_l;
+            for(int i=0;i<l->s_len_now;i++){
+                o_x = (int)(l->srcs[i]->light_map_w/2);
+                o_y = (int)(l->srcs[i]->light_map_h/2);
+                if(x>=l->srcs[i]->tile_x-o_x && x<=l->srcs[i]->tile_x+o_x && y>=l->srcs[i]->tile_y-o_y && y<=l->srcs[i]->tile_y+o_y){
+                    a = l->srcs[i]->light_map[((o_y+y-l->srcs[i]->tile_y)*l->srcs[i]->light_map_w+(o_x+x-l->srcs[i]->tile_x))];
+                    if(a>alpha){
+                        alpha = a;
+                    }
                 }
             }
             SDL_SetRenderDrawColor(rend, 0, 0, 0, (int)(255-255*alpha));
-			SDL_RenderFillRect(rend, &(SDL_Rect){x_o+ts*x, y_o+ts*y, ts, ts});
+			SDL_RenderFillRect(rend, &(SDL_Rect){x_o+l->ts*x, y_o+l->ts*y, l->ts, l->ts});
         }
     }
 }

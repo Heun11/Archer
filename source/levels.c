@@ -76,7 +76,8 @@ void LEVELS_Render_Level_From_Tilemap(TOOLS_TileMap* map, int off_x, int off_y, 
 
 int LEVELS_Menu()
 {
-    SDL_Rect button = {SCREEN_WIDTH/2-200,SCREEN_HEIGHT/2-100,400,200};
+	TOOLS_SDL_Text_RenderCopy(rend, font, "Archer!", SCREEN_WIDTH/2-400, SCREEN_HEIGHT/7, 800, 300, (SDL_Color){176,27,27});
+    SDL_Rect button = {SCREEN_WIDTH/2-200,SCREEN_HEIGHT/2,400,200};
 	TOOLS_SDL_Text_RenderCopy(rend, font, "play!", button.x, button.y, button.w, button.h, (SDL_Color){255,255,255});
 
     int mouse_x, mouse_y, buttons;
@@ -107,6 +108,12 @@ int LEVELS_level_1(PLAYER_Player* player)
         1,1,1
     };
 
+    SDL_Rect target_r = {1*info.ts+info.x_o, 5*info.ts+info.y_o, info.ts, info.ts};
+    TOOLS_Render_Image_From_Texture(rend, tex, &target[0], target_r.x, target_r.y, target_r.w, target_r.h);
+
+    SDL_Rect doors_r = {2*info.ts+info.x_o, 3*info.ts+info.y_o, info.ts, info.ts};
+    TOOLS_Render_Image_From_Texture(rend, tex, &doors[1], doors_r.x, doors_r.y, doors_r.w, doors_r.h);
+
     if(player->rect.x==-1&&player->rect.y==-1&&player->rect.w==-1&&player->rect.h==-1){
         PLAYER_Set_Player(player, info.ts, info.x_o, info.y_o, 2, 10);   
     }
@@ -122,19 +129,14 @@ int LEVELS_level_1(PLAYER_Player* player)
         PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, NULL, 0);
     }
 
-    SDL_Rect target_r = {1*info.ts+info.x_o, 5*info.ts+info.y_o, info.ts, info.ts};
-    TOOLS_Render_Image_From_Texture(rend, tex, &target[0], target_r.x, target_r.y, target_r.w, target_r.h);
+    LIGHT_Light light = {map.w*2, map.h*2, info.ts/2, 1, 0, .2f};
+    light.srcs = malloc(light.s_len*sizeof(LIGHT_LightSource*));
 
-    SDL_Rect doors_r = {2*info.ts+info.x_o, 3*info.ts+info.y_o, info.ts, info.ts};
-    TOOLS_Render_Image_From_Texture(rend, tex, &doors[1], doors_r.x, doors_r.y, doors_r.w, doors_r.h);
+    LIGHT_LightSource p_light = {player->rect.x/(info.ts/2),player->rect.y/(info.ts/2),9,9};
+    LIGHT_Add_LightMap_To_LightSource(&p_light, LIGHT_Player_LightMap);
+    LIGHT_Add_LightSource_To_Light(&light, &p_light);
 
-
-    LIGHT_LightSource srcs[1] = {
-        {player->rect.x/info.ts,player->rect.y/info.ts,5,5}
-    };
-    LIGHT_Add_LightMap_To_LightSource(&srcs[0], PLAYER_LightMap);
-    LIGHT_Render_Light(srcs, 1, map.w, map.h, info.ts, info.x_o, info.y_o);
-
+    LIGHT_Render_Light(&light, info.x_o, info.y_o);
 
     if(!player->can_shoot){
         if(TOOLS_Collide_Rect(player->arrow, target_r)){
@@ -148,6 +150,7 @@ int LEVELS_level_1(PLAYER_Player* player)
     }
 
     TOOLS_Free_Tilemap(&map);
+    LIGHT_Kill_Light(light);
     return 1;
 }
 

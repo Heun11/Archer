@@ -14,6 +14,7 @@ extern TTF_Font* font;
 
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
+extern float elapsed;
 
 #include"tiles.h"
 #include"player.h"

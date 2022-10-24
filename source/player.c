@@ -1,13 +1,5 @@
 #include"player.h"
 
-float PLAYER_LightMap[25] = {
-    .2f,.5f,.5f,.5f,.2f,
-    .5f,.75f,.8f,.75f,.5f,
-    .5f,.8f,1.0f,.8f,.5f,
-    .5f,.75f,.8f,.75f,.5f,
-    .2f,.5f,.5f,.5f,.2f
-};
-
 PLAYER_Player PLAYER_Create_Player()
 {
     PLAYER_Player p = {.x=-1,.y=-1,.rect={-1,-1,-1,-1},.speed=-1,.x_vel=0,.y_vel=0,.gravity=-1,.jump_speed=-1,
@@ -29,7 +21,7 @@ void PLAYER_Set_Player(PLAYER_Player* p, int ts, int x_o, int y_o, int x, int y)
     p->arrow.h = ts;
     p->arrow_speed = ts/7;
     p->speed = (float)ts/15;
-    p->gravity = (float)ts/90;
+    p->gravity = (float)ts/1.5;
     p->jump_speed = -((float)ts/3.75f);
 }
 
@@ -122,7 +114,7 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
         p->x_vel = 0;
     }
 
-    p->y_vel += p->gravity;
+    p->y_vel += p->gravity*elapsed;
     p->y += p->y_vel;
     p->rect.y = (int)p->y;
 

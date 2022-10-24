@@ -8,6 +8,7 @@ SDL_Texture* tex;
 TTF_Font* font;
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
+float elapsed;
 
 int main(int argc, char** argv)
 {
@@ -38,7 +39,7 @@ int main(int argc, char** argv)
 	}
 	SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 	
-	SDL_Surface* tileset = IMG_Load("resources/archer-tileset-new.png");
+	SDL_Surface* tileset = IMG_Load("resources/archer-tileset.png");
 	tex = SDL_CreateTextureFromSurface(rend, tileset);
 	SDL_FreeSurface(tileset);
 
@@ -51,8 +52,9 @@ int main(int argc, char** argv)
 	font = TTF_OpenFont("resources/ancient.ttf", 100);
 	SDL_Color text_color = {252, 3, 215};
 
-	float elapsed = 1;
+	elapsed = 1;
 	char fps_str[10];
+	int fps = 60;
 
 	int level_count = 0;
 
@@ -90,7 +92,6 @@ int main(int argc, char** argv)
 		}
 
 		SDL_RenderClear(rend);
-    	// SDL_SetRenderDrawColor(rend, 255, 0, 0, 255); // background color
 
 		if(level_count==0){
 			level_count = LEVELS_Menu();
@@ -102,7 +103,8 @@ int main(int argc, char** argv)
 			level_count = LEVELS_level_2(&player);
 		}
 
-		snprintf(fps_str, 10, "fps:%d", (int)(1.0f/elapsed));
+		fps = (int)(1.0f/elapsed);
+		snprintf(fps_str, 10, "fps:%d", fps);
 		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);
 		SDL_RenderPresent(rend);
 	
