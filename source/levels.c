@@ -129,6 +129,13 @@ int LEVELS_level_1(PLAYER_Player* player)
         PLAYER_Update_Player(player, &map, info.ts, info.x_o, info.y_o, NULL, NULL, 0);
     }
 
+
+    static PARTICLE_Particles ps;
+    if(ps.init!=1){
+        PARTICLE_Init_Particles(&ps, 900, 800, 30, 16, 16, (int[2]){-5,5}, (int[2]){50,80});
+    }
+    PARTICLE_Render_Smoke(&ps, 30);
+
     LIGHT_Light light = {map.w*2, map.h*2, info.ts/2, 1, 0, .2f};
     light.srcs = malloc(light.s_len*sizeof(LIGHT_LightSource*));
 
@@ -137,6 +144,7 @@ int LEVELS_level_1(PLAYER_Player* player)
     LIGHT_Add_LightSource_To_Light(&light, &p_light);
 
     LIGHT_Render_Light(&light, info.x_o, info.y_o);
+    LIGHT_Kill_Light(light);
 
     if(!player->can_shoot){
         if(TOOLS_Collide_Rect(player->arrow, target_r)){
@@ -150,7 +158,6 @@ int LEVELS_level_1(PLAYER_Player* player)
     }
 
     TOOLS_Free_Tilemap(&map);
-    LIGHT_Kill_Light(light);
     return 1;
 }
 

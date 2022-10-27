@@ -92,7 +92,6 @@ int main(int argc, char** argv)
 		}
 
 		SDL_RenderClear(rend);
-
 		if(level_count==0){
 			level_count = LEVELS_Menu();
 		}
@@ -106,6 +105,7 @@ int main(int argc, char** argv)
 		fps = (int)(1.0f/elapsed);
 		snprintf(fps_str, 10, "fps:%d", fps);
 		TOOLS_SDL_Text_RenderCopy(rend, font, fps_str, 10, 10, 100, 40, text_color);
+        SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 		SDL_RenderPresent(rend);
 	
 		Uint64 end = SDL_GetPerformanceCounter();

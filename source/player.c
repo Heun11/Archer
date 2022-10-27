@@ -19,8 +19,7 @@ void PLAYER_Set_Player(PLAYER_Player* p, int ts, int x_o, int y_o, int x, int y)
     p->arrow.y = p->rect.y;
     p->arrow.w = ts;
     p->arrow.h = ts;
-    p->arrow_speed = ts/7;
-    p->speed = (float)ts/15;
+    p->speed = (float)ts*4;
     p->gravity = (float)ts/1.5;
     p->jump_speed = -((float)ts/3.75f);
 }
@@ -49,10 +48,10 @@ void PLAYER_Key_Down_Player(PLAYER_Player* p, int key)
             p->arrow.x = p->rect.x;
             p->arrow.y = p->rect.y;
             if(p->last){
-                p->arrow_speed=-p->speed*2;
+                p->arrow_speed=-p->speed*2*elapsed;
             }
             else{
-                p->arrow_speed=p->speed*2;
+                p->arrow_speed=p->speed*2*elapsed;
             }
         }
     }
@@ -135,7 +134,7 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
         }
     }
 
-    p->x += (p->x_vel*p->speed);
+    p->x += (p->x_vel*p->speed*elapsed);
     p->rect.x = (int)p->x;
 
     for(int i=0;i<m->h;i++){

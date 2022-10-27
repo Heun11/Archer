@@ -76,7 +76,7 @@ int TOOLS_Collide_Rect(SDL_Rect r1, SDL_Rect r2)
 
 void TOOLS_Play_Animation(SDL_Renderer* r, SDL_Rect* images, float* anim_c, int fps, int start, int end, int x, int y, int w, int h)
 {
-	float n = (float)fps/60.0f;
+	float n = (float)fps/(1.0f/elapsed);
 	*anim_c+=n;
 	if(*anim_c>=end+1){
 		*anim_c = start;

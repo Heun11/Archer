@@ -12,6 +12,7 @@ typedef struct{
 }LEVEL_Block;
 
 #include"main.h"
+#include"particle.h"
 
 int LEVELS_Menu();
 int LEVELS_level_1(PLAYER_Player* p);
