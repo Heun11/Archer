@@ -9,6 +9,16 @@ int TOOLS_Random_Number(int start, int stop)
 	return (rand()%(stop-start+1))+start;
 }
 
+float TOOLS_Random_Float(float stop)
+{
+	if(SRAND_CALL!=-1){
+		srand(time(0));
+		SRAND_CALL = -1;
+	}
+	return ((float)rand()/RAND_MAX)*stop;
+}
+
+
 void get_error()
 {
 	printf("Error with sdl: %s\n", SDL_GetError());

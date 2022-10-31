@@ -1,16 +1,5 @@
 #include"enemy.h"
 
-// tyeedef struct{
-//     float x;
-//     float y;
-//     SDL_Rect r;
-//     int last;
-//     float x_vel;
-//     float y_vel;
-//     int on_ground;
-//     int can_attack;
-// }ENEMY_Enemy;
-
 void ENEMY_Init_Enemy(ENEMY_Enemy* e, int x, int y, int w, int h, int x_vel)
 {
     if(e->init!=1){

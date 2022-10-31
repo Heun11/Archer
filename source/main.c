@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 	TILES_Load_Tiles();
 
 	char save_file[] = "resources/save.dat";
-	TOOLS_SaveData save_data = {0,0};
+	TOOLS_SaveData save_data = {1,0};
 	FILE* f = fopen(save_file, "r");
 	if(f==NULL){
 		TOOLS_Save_Data(save_file, &save_data);
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 		TOOLS_Load_Data(save_file, &save_data);
 	}
 	int level_count = save_data.level_i;
-	int menu = 0;
+	int level_start = 0;
 
 	PLAYER_Player player = PLAYER_Create_Player();
 	int key;
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 	font = TTF_OpenFont("resources/ancient.ttf", 50);
 	SDL_Color text_color = {252, 3, 215};
 
-	elapsed = 1;
+	elapsed = 0.016f;
 	char fps_str[10];
 	int fps = 60;
 
@@ -104,46 +104,36 @@ int main(int argc, char** argv)
 		}
 
 		SDL_RenderClear(rend);
-		if(!menu){
-			menu = LEVELS_Menu();
-		}
-		else if(level_count==0){
-			TOOLS_SDL_Text_RenderCopy(rend, font, "Game Over!", SCREEN_WIDTH/2-400, SCREEN_HEIGHT/7, 800, 300, (SDL_Color){176,27,27});
-			SDL_Rect button = {SCREEN_WIDTH/2-200,SCREEN_HEIGHT/2,400,200};
-			TOOLS_SDL_Text_RenderCopy(rend, font, "retry?", button.x, button.y, button.w, button.h, (SDL_Color){255,255,255});
 
-			int mouse_x, mouse_y, buttons;
-			buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
-			if(buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
-				SDL_Rect mouse = {mouse_x-5, mouse_y-5, 10,10};
-				if(TOOLS_Collide_Rect(mouse, button)){
-					save_data.level_i = 0;
-					save_data.pearls = 0;
-					TOOLS_Save_Data(save_file, &save_data);
-					player = PLAYER_Create_Player();
-					level_count = 1;
-				}
-			}
-		}
-		else if(level_count==1){
-			if(save_data.level_i!=1){
-				save_data.level_i = 1;
-				TOOLS_Save_Data(save_file, &save_data);
-			}
-			level_count = LEVELS_level_1(&player);
-		}
-		else if(level_count==2){
-			if(save_data.level_i!=2){
-				save_data.level_i = 2;
-				TOOLS_Save_Data(save_file, &save_data);
-			}
-			level_count = LEVELS_level_2(&player);
+		if(!level_start){
+			level_start = LEVELS_level_0(&player);
 		}
 		else{
-			TOOLS_SDL_Text_RenderCopy(rend, font, "Not yet!", SCREEN_WIDTH/2-400, SCREEN_HEIGHT/7, 800, 300, (SDL_Color){176,27,27});
-			if(save_data.level_i!=1){
-				save_data.level_i = 1;
-				TOOLS_Save_Data(save_file, &save_data);
+			if(level_count==0){
+				TOOLS_SDL_Text_RenderCopy(rend, font, "Game Over!", SCREEN_WIDTH/2-400, SCREEN_HEIGHT/7, 800, 300, (SDL_Color){176,27,27});
+				SDL_Rect button = {SCREEN_WIDTH/2-200,SCREEN_HEIGHT/2,400,200};
+				TOOLS_SDL_Text_RenderCopy(rend, font, "retry?", button.x, button.y, button.w, button.h, (SDL_Color){255,255,255});
+
+				int mouse_x, mouse_y, buttons;
+				buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+				if(buttons & SDL_BUTTON(SDL_BUTTON_LEFT)){
+					SDL_Rect mouse = {mouse_x-5, mouse_y-5, 10,10};
+					if(TOOLS_Collide_Rect(mouse, button)){
+						save_data.level_i = 0;
+						save_data.pearls = 0;
+						TOOLS_Save_Data(save_file, &save_data);
+						player = PLAYER_Create_Player();
+						level_count = 1;
+						level_start = 0;
+					}
+				}
+			}
+			else if(level_count==1){
+				if(save_data.level_i!=1){
+					save_data.level_i = 1;
+					TOOLS_Save_Data(save_file, &save_data);
+				}
+				level_count = LEVELS_level_1(&player);
 			}
 		}
 

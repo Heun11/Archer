@@ -94,7 +94,7 @@ int LEVELS_Menu()
     return 0;
 }
 
-int LEVELS_level_1(PLAYER_Player* player)
+int LEVELS_level_0(PLAYER_Player* player)
 {
     TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level1.map");
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
@@ -140,34 +140,26 @@ int LEVELS_level_1(PLAYER_Player* player)
         }
     }
 
-    LIGHT_Light light = {map.w*2, map.h*2, info.ts/2, 3, 0, 0.f};
+    LIGHT_Light light = {map.w*3, map.h*3, info.ts/3, 1, 0, 0.f};
     light.srcs = malloc(light.s_len*sizeof(LIGHT_LightSource*));
 
-    LIGHT_LightSource p_light = {(player->rect.x-info.x_o)/(info.ts/2)+1,(player->rect.y-info.y_o)/(info.ts/2),9,9};
+    LIGHT_LightSource p_light = {(player->rect.x-info.x_o)/light.ts+1,(player->rect.y-info.y_o)/light.ts+1,19,19};
     LIGHT_Add_LightMap_To_LightSource(&p_light, LIGHT_Player_LightMap);
     LIGHT_Add_LightSource_To_Light(&light, &p_light);
-
-    LIGHT_LightSource t_light = {(target_r.x-info.x_o)/(info.ts/2)+1,(target_r.y-info.y_o)/(info.ts/2)+1,5,5};
-    LIGHT_Add_LightMap_To_LightSource(&t_light, LIGHT_Torch_LightMap);
-    LIGHT_Add_LightSource_To_Light(&light, &t_light);
-
-    LIGHT_LightSource d_light = {(doors_r.x-info.x_o)/(info.ts/2),(doors_r.y-info.y_o)/(info.ts/2)+1,5,5};
-    LIGHT_Add_LightMap_To_LightSource(&d_light, LIGHT_Torch_LightMap);
-    LIGHT_Add_LightSource_To_Light(&light, &d_light);
 
     LIGHT_Render_Light(&light, info.x_o, info.y_o);
     LIGHT_Kill_Light(light);
 
     if(TOOLS_Collide_Rect(player->rect, doors_r)){
         target_shooted = 0;
-        return 2;
+        return 1;
     }
 
     TOOLS_Free_Tilemap(&map);
-    return 1;
+    return 0;
 }
 
-int LEVELS_level_2(PLAYER_Player* player)
+int LEVELS_level_1(PLAYER_Player* player)
 {
     TOOLS_TileMap map = TOOLS_Load_TileMap_From_File_To_Array("resources/level2.map");
     struct LEVELS_level_render_info info = LEVELS_Get_Level_Render_Info(&map);
@@ -217,20 +209,16 @@ int LEVELS_level_2(PLAYER_Player* player)
         }
     }
 
-    // static PARTICLE_Particles ps;
-    // PARTICLE_Init_Particles(&ps, 900, 800, 30, 16, 16, (int[2]){-5,5}, (int[2]){50,80});
-    // PARTICLE_Render_Smoke(&ps, 30, info.ts);
-
-    LIGHT_Light light = {map.w*2, map.h*2, info.ts/2, 2, 0, 0.f};
+    LIGHT_Light light = {map.w*3, map.h*3, info.ts/3, 7, 0, 0.f};
     light.srcs = malloc(light.s_len*sizeof(LIGHT_LightSource*));
 
-    LIGHT_LightSource p_light = {(player->rect.x-info.x_o)/(info.ts/2)+1,(player->rect.y-info.y_o)/(info.ts/2),9,9};
+    LIGHT_LightSource p_light = {(player->rect.x-info.x_o)/light.ts+1,(player->rect.y-info.y_o)/light.ts+1,19,19};
     LIGHT_Add_LightMap_To_LightSource(&p_light, LIGHT_Player_LightMap);
     LIGHT_Add_LightSource_To_Light(&light, &p_light);
 
-    LIGHT_LightSource t_light = {(target_r.x-info.x_o)/(info.ts/2)+1,(target_r.y-info.y_o)/(info.ts/2)+1,5,5};
-    LIGHT_Add_LightMap_To_LightSource(&t_light, LIGHT_Torch_LightMap);
-    LIGHT_Add_LightSource_To_Light(&light, &t_light);
+    // LIGHT_LightSource t_light = {(target_r.x-info.x_o)/(info.ts/2)+1,(target_r.y-info.y_o)/(info.ts/2)+1,5,5};
+    // LIGHT_Add_LightMap_To_LightSource(&t_light, LIGHT_Torch_LightMap);
+    // LIGHT_Add_LightSource_To_Light(&light, &t_light);
 
     LIGHT_Render_Light(&light, info.x_o, info.y_o);
     LIGHT_Kill_Light(light);
@@ -240,12 +228,12 @@ int LEVELS_level_2(PLAYER_Player* player)
     if(TOOLS_Collide_Rect(player->rect, doors_r)){
         target_shooted = 0;
         rat.init = 0;
-        return 3;
+        return 2;
     }
     else if(player->dead){
         target_shooted = 0;
         rat.init = 0;
         return 0;
     }
-    return 2;
+    return 1;
 }

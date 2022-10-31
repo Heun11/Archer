@@ -15,7 +15,7 @@ void TOOLS_Save_Data(char* filename, TOOLS_SaveData* d)
 
 int main()
 {
-	TOOLS_SaveData d = {0,0};
+	TOOLS_SaveData d = {1,0};
 	TOOLS_Save_Data("resources/save.dat", &d);
 	return 0;
 }

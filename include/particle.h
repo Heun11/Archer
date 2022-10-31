@@ -2,8 +2,8 @@
 #define PARTICLE_H
 
 typedef struct{
-    int x;
-    int y;
+    float x;
+    float y;
     int w;
     int h;
     float l_t;
@@ -20,8 +20,7 @@ typedef struct{
     int src_h;
     int size;
     PARTICLE_Particle* ps;
-    int vxr[2];
-    int vyr[2];
+    float delayed;
 }PARTICLE_Particles;
 
 /*  
@@ -32,7 +31,7 @@ typedef struct{
 
 #include"main.h"
 
-void PARTICLE_Init_Particles(PARTICLE_Particles* ps, int src_x, int src_y, int size, int src_w, int src_h, int v_x_r[2], int v_y_r[2]);
+void PARTICLE_Init_Particles(PARTICLE_Particles* ps, int src_x, int src_y, int size, int src_w, int src_h);
 void PARTICLE_Render_Smoke(PARTICLE_Particles* ps, int life_time, int ts);
 
 #endif
