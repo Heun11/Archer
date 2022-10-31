@@ -7,6 +7,7 @@ MAPA:
         1-9 -> tehly
         10-18 -> dreva
         19-22 -> drevo tehla
+        23 -> mreza
     Decor layer:
         0 -> nic
         1 -> sud

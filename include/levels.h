@@ -13,6 +13,7 @@ typedef struct{
 
 #include"main.h"
 #include"particle.h"
+#include"enemy.h"
 
 int LEVELS_Menu();
 int LEVELS_level_1(PLAYER_Player* p);

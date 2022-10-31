@@ -3,25 +3,27 @@
 PLAYER_Player PLAYER_Create_Player()
 {
     PLAYER_Player p = {.x=-1,.y=-1,.rect={-1,-1,-1,-1},.speed=-1,.x_vel=0,.y_vel=0,.gravity=-1,.jump_speed=-1,
-        .on_ground=0,.last=0,.l=0,.r=0,.can_shoot=1,.arrow={-1,-1,-1,-1},.arrow_speed=-1};
+        .on_ground=0,.last=0,.l=0,.r=0,.can_shoot=1,.arrow={-1,-1,-1,-1},.arrow_speed=-1,.dead=0};
     return p;
 }
 
-void PLAYER_Set_Player(PLAYER_Player* p, int ts, int x_o, int y_o, int x, int y)
+void PLAYER_Set_Player(PLAYER_Player* p, int ts, int map_w, int map_h, int x_o, int y_o, int x, int y)
 {
+    p->dead = 0;
     p->rect.w = ts;
     p->rect.h = ts;
     p->rect.x = x*ts+x_o;
     p->rect.y = y*ts+y_o;
     p->x = p->rect.x;
     p->y = p->rect.y;
+    p->can_shoot = 1;
     p->arrow.x = p->rect.x;
     p->arrow.y = p->rect.y;
     p->arrow.w = ts;
     p->arrow.h = ts;
-    p->speed = (float)ts*4;
-    p->gravity = (float)ts/1.5;
-    p->jump_speed = -((float)ts/3.75f);
+    p->speed = (float)ts*5;
+    p->gravity = (float)ts*70;
+    p->jump_speed = -p->gravity/3;
 }
 
 void PLAYER_Key_Down_Player(PLAYER_Player* p, int key)
@@ -37,7 +39,7 @@ void PLAYER_Key_Down_Player(PLAYER_Player* p, int key)
 
     if(key==SDL_SCANCODE_SPACE){
         if(p->on_ground){
-            p->y_vel = p->jump_speed;
+            p->y_vel = p->jump_speed + elapsed*p->gravity;
             p->on_ground = 0;
         }
     }
@@ -67,33 +69,64 @@ void PLAYER_Key_Up_Player(PLAYER_Player* p, int key)
     }
 }
 
-void PLAYER_Collision_Horizontal(PLAYER_Player* p, SDL_Rect t)
+void PLAYER_Collision_Horizontal(PLAYER_Player* p, SDL_Rect t, int type)
 {
-    if(TOOLS_Collide_Rect(p->rect, t)){
-        if(p->x_vel>0){
-            p->x = (float)(t.x-p->rect.w);
-            p->rect.x = (int)p->x;
+    if((type>=1&&type<=21)||type>=23){
+        if(TOOLS_Collide_Rect(p->rect, t)){
+            if(p->x_vel>0){
+                p->x = (float)(t.x-p->rect.w);
+                p->rect.x = (int)p->x;
+            }
+            else if(p->x_vel<0){
+                p->x = (float)(t.x+t.w);
+                p->rect.x = (int)p->x;
+            }
         }
-        else if(p->x_vel<0){
-            p->x = (float)(t.x+t.w);
-            p->rect.x = (int)p->x;
+    }
+    else if(type==22){
+        if(TOOLS_Collide_Rect(p->rect, t)){
+            if(p->x_vel>0&&p->rect.x<t.x){
+                p->x = (float)(t.x-p->rect.w);
+                p->rect.x = (int)p->x;
+            }
+            else if(p->x_vel<0&&p->rect.x>t.x){
+                p->x = (float)(t.x+t.w);
+                p->rect.x = (int)p->x;
+            }
         }
     }
 }
 
-void PLAYER_Collision_Vertical(PLAYER_Player* p, SDL_Rect t)
+void PLAYER_Collision_Vertical(PLAYER_Player* p, SDL_Rect t, int type)
 {
-    if(TOOLS_Collide_Rect(p->rect, t)){
-        if(p->y_vel>0){
-            p->y = (float)(t.y-p->rect.h);
-            p->rect.y = (int)p->y;
-            p->y_vel = 0;
-            p->on_ground = 1;
+    if((type>=1&&type<=21)||type>=23){
+        if(TOOLS_Collide_Rect(p->rect, t)){
+            if(p->y_vel>0){
+                p->y = (float)(t.y-p->rect.h);
+                p->rect.y = (int)p->y;
+                p->y_vel = 0;
+                p->on_ground = 1;
+            }
+            else if(p->y_vel<0){
+                p->y = (float)(t.y+t.h);
+                p->rect.y = (int)p->y;
+                p->y_vel = 0;
+            }
         }
-        else if(p->y_vel<0){
-            p->y = (float)(t.y+t.h);
-            p->rect.y = (int)p->y;
-            p->y_vel = 0;
+    }
+    else if(type==22){
+        if(TOOLS_Collide_Rect(p->rect, t)){
+            if(p->y_vel>0){
+                p->y = (float)(t.y-p->rect.h);
+                p->rect.y = (int)p->y;
+                p->y_vel = 0;
+                p->on_ground = 1;
+            }
+            else if(p->y_vel<0){
+                p->y = (float)(t.y-p->rect.h);
+                p->rect.y = (int)p->y;
+                p->y_vel = 0;
+            }
         }
     }
 }
@@ -113,23 +146,21 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
         p->x_vel = 0;
     }
 
-    p->y_vel += p->gravity*elapsed;
-    p->y += p->y_vel;
+    p->y_vel = p->y_vel + elapsed*p->gravity;
+    p->y = p->y + elapsed*p->y_vel;
     p->rect.y = (int)p->y;
 
     for(int i=0;i<m->h;i++){
         for(int j=0;j<m->w;j++){
-            if(m->l1[i*m->w+j]>0){
-                SDL_Rect t = {j*ts+x_o, i*ts+y_o, ts, ts};
-                PLAYER_Collision_Vertical(p, t);
-            }
+            SDL_Rect t = {j*ts+x_o, i*ts+y_o, ts, ts};
+            PLAYER_Collision_Vertical(p, t, m->l1[i*m->w+j]);    
         }
     }
     if(blocks!=NULL && active_blocks!=NULL){
         for(int i=0;i<blocks_len;i++){
-            if(active_blocks[i]==1 && blocks[i].t>0){
+            if(active_blocks[i]==1){
                 SDL_Rect t = {blocks[i].x*ts+x_o, blocks[i].y*ts+y_o, ts, ts};
-                PLAYER_Collision_Vertical(p, t);
+                PLAYER_Collision_Vertical(p, t, blocks[i].t);
             }
         }
     }
@@ -139,17 +170,15 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
 
     for(int i=0;i<m->h;i++){
         for(int j=0;j<m->w;j++){
-            if(m->l1[i*m->w+j]>0){
-                SDL_Rect t = {j*ts+x_o, i*ts+y_o, ts, ts};
-                PLAYER_Collision_Horizontal(p, t);
-            }
+            SDL_Rect t = {j*ts+x_o, i*ts+y_o, ts, ts};
+            PLAYER_Collision_Horizontal(p, t, m->l1[i*m->w+j]);
         }
     }
     if(blocks!=NULL && active_blocks!=NULL){
         for(int i=0;i<blocks_len;i++){
-            if(active_blocks[i]==1 && blocks[i].t>0){
+            if(active_blocks[i]==1){
                 SDL_Rect t = {blocks[i].x*ts+x_o, blocks[i].y*ts+y_o, ts, ts};
-                PLAYER_Collision_Horizontal(p, t);
+                PLAYER_Collision_Horizontal(p, t, blocks[i].t);
             }
         }
     }
@@ -169,6 +198,10 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
         }
     }
     SDL_RenderDrawRect(rend, &p->rect);
+
+    if(p->dead){
+	    TOOLS_SDL_Text_RenderCopy(rend, font, "You Died!", SCREEN_WIDTH/2-400, SCREEN_HEIGHT/2, 800, 300, (SDL_Color){176,27,27});
+    }
 
     if(!p->can_shoot){
         p->arrow.x += p->arrow_speed;
@@ -190,7 +223,7 @@ void PLAYER_Update_Player(PLAYER_Player* p, TOOLS_TileMap* m, int ts, int x_o, i
         }
         if(blocks!=NULL){
             for(int i=0;i<blocks_len;i++){
-                if(blocks[i].t>0){
+                if(active_blocks[i]==1 && blocks[i].t>0){
                     if(TOOLS_Collide_Rect(p->arrow, (SDL_Rect){blocks[i].x*ts+x_o, blocks[i].y*ts+y_o, ts, ts})){
                         p->can_shoot = 1;
                     }

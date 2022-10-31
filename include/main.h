@@ -5,8 +5,10 @@
 #include"tools.h"
 #include"stdio.h"
 #include"stdlib.h"
+#include"math.h"
 
 #define TILE_SIZE_REAL 16
+#define TS 64 // for speed calculations
 
 extern SDL_Renderer* rend;
 extern SDL_Texture* tex;

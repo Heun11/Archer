@@ -18,7 +18,7 @@ void get_error()
 
 void TOOLS_SDL_Text_RenderCopy(SDL_Renderer* r, TTF_Font* f, char* s, int x, int y, int w, int h, SDL_Color c)
 {
-	SDL_Surface* surf = TTF_RenderText_Solid(f, s, c);
+	SDL_Surface* surf = TTF_RenderText_Blended_Wrapped(f, s, c, w);
 	SDL_Texture* t = SDL_CreateTextureFromSurface(r, surf);
 	SDL_FreeSurface(surf);
 	SDL_RenderCopy(r, t, NULL, &(SDL_Rect){x, y, w, h});
@@ -82,4 +82,28 @@ void TOOLS_Play_Animation(SDL_Renderer* r, SDL_Rect* images, float* anim_c, int 
 		*anim_c = start;
 	}
 	TOOLS_Render_Image_From_Texture(rend, tex, &images[(int)*anim_c], x, y, w, h);
+}
+
+void TOOLS_Save_Data(char* filename, TOOLS_SaveData* d)
+{
+	FILE* file;
+	file = fopen(filename, "w");
+	// if(file==NULL){
+	// 	fprintf(stderr, "\nError Opening File\n");
+	// 	exit(1);
+	// }
+	fwrite(d, sizeof(TOOLS_SaveData), 1, file);
+	fclose(file);
+}
+
+void TOOLS_Load_Data(char* filename, TOOLS_SaveData* d)
+{
+	FILE* file;
+	file = fopen(filename, "r");
+	// if(file==NULL){
+	// 	fprintf(stderr, "\nError Opening File\n");
+	// 	exit(1);
+	// }
+	fread(d, sizeof(TOOLS_SaveData), 1, file);
+	fclose(file);
 }

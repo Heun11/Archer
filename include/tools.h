@@ -9,6 +9,11 @@ typedef struct{
 	int* l2;
 }TOOLS_TileMap;
 
+typedef struct{
+	int level_i;
+	int pearls;
+}TOOLS_SaveData;
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<time.h>
@@ -29,6 +34,9 @@ void TOOLS_SDL_Text_RenderCopy(SDL_Renderer* r, TTF_Font* f, char* s, int x, int
 int TOOLS_Random_Number(int start, int stop);
 int TOOLS_Collide_Rect(SDL_Rect r1, SDL_Rect r2);
 void TOOLS_Play_Animation(SDL_Renderer* r, SDL_Rect* images, float* anim_c, int fps, int start, int end, int x, int y, int w, int h);
+
+void TOOLS_Save_Data(char* filename, TOOLS_SaveData* d);
+void TOOLS_Load_Data(char* filename, TOOLS_SaveData* d);
 
 void get_error();
 

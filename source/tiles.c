@@ -16,8 +16,7 @@ SDL_Rect rat[2];
 SDL_Rect banner;
 SDL_Rect chains;
 SDL_Rect woodBricks[4];
-SDL_Rect vent;
-SDL_Rect particle;
+SDL_Rect grid;
 
 void TILES_Load_Tiles()
 {
@@ -83,7 +82,5 @@ void TILES_Load_Tiles()
 	arrow[0] = TOOLS_Get_Image_Src(4, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
 	arrow[1] = TOOLS_Get_Image_Src(5, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
 
-	vent = TOOLS_Get_Image_Src(6, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
-
-	particle = TOOLS_Get_Image_Src(7, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
+	grid = TOOLS_Get_Image_Src(6, 5, TILE_SIZE_REAL, TILE_SIZE_REAL);
 }
